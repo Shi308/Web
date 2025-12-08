@@ -1,0 +1,22 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+
+# Visual Studio
+.vs/
+
+# Dotnet tools
+.store/
+/.config/
+
+# Generated scaffolding cache
+*.cache
+
+# Archives
+*.zip
+
