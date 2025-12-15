@@ -18,10 +18,17 @@ namespace Lab2.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var movies = await _context.Movie.AsNoTracking().ToListAsync();
-            return View(movies);
+            var movies = from m in _context.Movie
+                         select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Genre!.Contains(searchString));
+            }
+
+            return View(await movies.AsNoTracking().ToListAsync());
         }
 
         // GET: Movies/Details/5
@@ -52,7 +59,7 @@ namespace Lab2.Controllers
         // POST: Movies/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +89,7 @@ namespace Lab2.Controllers
         // POST: Movies/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
             if (id != movie.Id)
             {
@@ -152,5 +159,6 @@ namespace Lab2.Controllers
         }
     }
 }
+
 
 
